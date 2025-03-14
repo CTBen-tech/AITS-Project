@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',# rest framework
     'aits',#this is my app
     'django.contrib.admin',
     'django.contrib.auth',
