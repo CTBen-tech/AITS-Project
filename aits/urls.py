@@ -21,6 +21,6 @@ urlpatterns = [
     path('issues/<int:pk>/delete/',api_views.IssueDeleteView.as_view()),
 
     #function based view URL
-    path('issue/',api_views.issue_list),
+    path('issues/',api_views.issue_list),
 
 ]

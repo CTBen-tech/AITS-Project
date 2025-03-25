@@ -1,11 +1,27 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+const [issues, setIssues] = useState([]);
+
+useEffect(() => {
+  axios.get('http://localhost:8000/api/issues/')
+  .then(response => setIssues(response.data))
+  .catch(error => console.log(error));
+}, []);
+
   return (
     <><div>
-      <h1>this is my first react</h1>
+      <h1>Issues  from django</h1>
+      <ul>
+        {issues.map(Issue =>(<li key={Issue.id}> {Issue.title}: {Issue.description}</li>))}
+      </ul>
     </div>
+
+
+
     <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
