@@ -24,7 +24,7 @@ from aits.views import  LoginView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('aits.urls')),
-    path('api/login/', LoginView.as_view(), name='login'),
+    path('api/Login/', LoginView.as_view(), name='login'),
     path('', TemplateView.as_view(template_name = "index.html")),
     re_path(r'^.*$', TemplateView.as_view(template_name = "index.html")),
 ]

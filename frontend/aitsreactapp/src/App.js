@@ -3,8 +3,18 @@ import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import Login from './login';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Login from './components/Login';
 
 function App() {
+  return(
+    <Router>
+      <Routes>
+        <Route path="/login" element ={<Login />} />
+
+      </Routes>
+    </Router>
+  );
 const [issues, setIssues] = useState([]);
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 
