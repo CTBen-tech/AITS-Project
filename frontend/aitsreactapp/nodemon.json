@@ -1,0 +1,7 @@
+{
+    "watch":["src"],
+    "ext":"js, jsx" ,
+    "exec": "npm run build && move build ..\\..\\backend\\aits\\static\\ && copy ..\\..\\backend\\aits\\static\\build\\index.html ..\\backend\\templates\\",
+    "watchOptions":{"poll":1000}
+
+}

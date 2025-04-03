@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import Login from './login';
 
 function App() {
 const [issues, setIssues] = useState([]);
+const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 useEffect(() => {
   axios.get('http://localhost:8000/api/issues/')
@@ -14,10 +16,18 @@ useEffect(() => {
 
   return (
     <><div>
-      <h1>Issues  from django</h1>
+      {!isLoggedIn ?(
+        <Login onLogin = {() => setIsLoggedIn(true)} /> // Pass callback to update state
+      ):(
+        <>
+        <h1>issues  from django</h1>
       <ul>
         {issues.map(Issue =>(<li key={Issue.id}> {Issue.title}: {Issue.description}</li>))}
       </ul>
+
+        </>
+      )}
+      
     </div>
 
 
