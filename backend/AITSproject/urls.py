@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.urls import re_path
 from django.views.generic import TemplateView #it serves index.html
 from aits.views import  LoginView
 
@@ -25,4 +26,5 @@ urlpatterns = [
     path('api/', include('aits.urls')),
     path('api/login/', LoginView.as_view(), name='login'),
     path('', TemplateView.as_view(template_name = "index.html")),
+    re_path(r'^.*$', TemplateView.as_view(template_name = "index.html")),
 ]
