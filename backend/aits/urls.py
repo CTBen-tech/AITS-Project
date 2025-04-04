@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import include, path
 from rest_framework import routers
 from . import api_views
+from .views import LoginView
 
 #using routers for view sets
 router = routers.DefaultRouter()
@@ -22,5 +23,8 @@ urlpatterns = [
 
     #function based view URL
     path('issues/',api_views.issue_list),
+    path('login/', LoginView.as_view(), name = 'login')
+    
+
 
 ]
