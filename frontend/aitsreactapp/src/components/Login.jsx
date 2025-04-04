@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
-import '../styles.css'; // Import the new styles.css
+//import '../styles.css'; // Import the new styles.css
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -38,6 +38,7 @@ function Login() {
       const response = await axios.post('http://localhost:8000/api/password_reset/', {
         email: resetEmail,
       });
+      console.log('Login response:', response);
       setResetMessage('A password reset link has been sent to your email.');
     } catch (error) {
       console.error('Password reset failed', error);

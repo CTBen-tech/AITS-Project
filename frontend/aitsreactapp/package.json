@@ -11,6 +11,8 @@
     "axios": "^1.8.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.4.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -21,7 +23,6 @@
     "eject": "react-scripts eject",
     "start-nodemon": "nodemon --exec \"npm run build-and-move\"",
     "build-and-move": "react-scripts build && echo Moving build... && move build ..\\..\\backend\\aits\\static\\ && echo Copying index.html... && copy ..\\..\\backend\\aits\\static\\build\\index.html ..\\..\\backend\\templates"
-    
   },
   "eslintConfig": {
     "extends": [

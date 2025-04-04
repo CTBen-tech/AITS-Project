@@ -1,21 +1,36 @@
-import { useEffect, useState } from 'react';
+/*import { useEffect, useState } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
+import logo from './logo.svg';*/
+import React from 'react';
 import './App.css';
-import Login from './login';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './components/Login';
+import ErrorBoundary from './ErrorBoundary'; // Adjust the path as necessary
+
+
 
 function App() {
+  /*const myref = useRef();*/
   return(
     <Router>
-      <Routes>
-        <Route path="/login" element ={<Login />} />
+      <ErrorBoundary>
+         <Login />
+    
+      
+         <Routes>
+            <Route path="/" element ={<Login />} />
+            <Route path="/login" element ={<Login />} />
 
-      </Routes>
+          </Routes>     
+     
+      </ErrorBoundary>
     </Router>
   );
-const [issues, setIssues] = useState([]);
+}
+  
+export default App;
+
+/*const [issues, setIssues] = useState([]);
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 useEffect(() => {
@@ -59,6 +74,5 @@ useEffect(() => {
         </header>
       </div></>
   );
-}
+}*/
 
-export default App;
