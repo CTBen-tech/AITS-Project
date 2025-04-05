@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 //import '../styles.css'; // Import the new styles.css
 
@@ -102,6 +102,9 @@ function Login() {
             Sign in
           </button>
         </form>
+        <p>
+              Dont have an account?<Link to ="/register">Register Here</Link>
+        </p>
       </div>
 
       {/* Forgot Password Modal */}
@@ -141,6 +144,7 @@ function Login() {
                 </button>
               </div>
             </form>
+          
           </div>
         </div>
       )}

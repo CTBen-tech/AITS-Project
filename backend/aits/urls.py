@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import api_views
-from .views import LoginView
+from .views import LoginView, RegisterView
 
 #using routers for view sets
 router = routers.DefaultRouter()
@@ -23,7 +23,8 @@ urlpatterns = [
 
     #function based view URL
     path('issues/',api_views.issue_list),
-    path('login/', LoginView.as_view(), name = 'login')
+    path('login/', LoginView.as_view(), name = 'login'),
+    path('register/', RegisterView.as_view(), name='register')
     
 
 
