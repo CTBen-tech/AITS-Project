@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 //import '../styles.css'; // Import the new styles.css
