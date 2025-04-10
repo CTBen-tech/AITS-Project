@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './register.css';
 
 const Register = () => {
     const [username, setUsername] = useState('');
@@ -33,11 +34,11 @@ const Register = () => {
     };
 
     return (
-        <div>
-            <h2>Register</h2>
+        <div className="register-container">
+            <h2>Create an Account</h2>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Username:</label>
+                    <label>Username</label>
                     <input
                         type="text"
                         value={username}
@@ -46,7 +47,7 @@ const Register = () => {
                     />
                 </div>
                 <div>
-                    <label>Email:</label>
+                    <label>Email</label>
                     <input
                         type="email"
                         value={email}
@@ -55,7 +56,7 @@ const Register = () => {
                     />
                 </div>
                 <div>
-                    <label>Password:</label>
+                    <label>Password</label>
                     <input
                         type="password"
                         value={password}
@@ -64,7 +65,7 @@ const Register = () => {
                     />
                 </div>
                 <div>
-                    <label>Confirm Password:</label>
+                    <label>Confirm Password</label>
                     <input
                         type="password"
                         value={confirmPassword}
