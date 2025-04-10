@@ -25,12 +25,21 @@ class RegisterView(APIView):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
+        print(f"Registering: username = {username}, email={email}, password = {password}")
+        if not all([username, email, password]):
+            return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=username).exists():
+            print(f"Username '{username}' already exists")
             return Response({'error':'User name already Exists'}, status=status.HTTP_400_BAD_REQUEST)
+        
         if User.objects.filter(email=email).exists():
+            print(f"Email '{email}' already exists")
             return Response({'error':'User Email already Exists'}, status=status.HTTP_400_BAD_REQUEST)
         
         user = User.objects.create_user(username=username, email=email, password=password)
+        user.is_active = True
+        user.save()
+        print(f"User '{username}' created successfully")
         return Response({'message':'User craeted successfully'}, status=status.HTTP_201_CREATED)
 

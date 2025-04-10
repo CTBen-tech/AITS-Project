@@ -6,24 +6,34 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
-//import ErrorBoundary from './ErrorBoundary'; // Adjust the path as necessary
+import Dashboard from './components/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './ErrorBoundary'; // Adjust the path as necessary
 
 
 
 function App() {
-  /*const myref = useRef();*/
+  
   return(
-    <Router>    
-      
-         <Routes>
-            <Route path="/" element ={<Login />} />
-            <Route path="/login" element ={<Login />} />
-            <Route path="/register" element ={<Register />} />
-
-          </Routes>     
-     
     
-    </Router>
+    <Router>
+    <ErrorBoundary>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </ErrorBoundary>
+  </Router>     
+      
   );
 }
   

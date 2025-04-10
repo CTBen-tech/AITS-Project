@@ -21,10 +21,15 @@ function Login() {
         password,
       });
       localStorage.setItem('token', response.data.access);
-      navigate('/dashboard');
+      localStorage.setItem('refreshtoken', response.data.refresh);
+      console.log('Tokens set:', localStorage.getItem('token'));
+    
+      console.log('Navigating to /dashboard');
+      navigate('/dashboard', {replace: true});
+      alert('Login successful');
     } catch (error) {
-      console.error('Login failed', error);
-      alert('Invalid credentials. Please try again.');
+      console.error('Login failed:', error.response?.data || error.message, error.response?.status);
+      alert('Login failed:', error.response?.data?.detail || error.message);
     }
   };
 
@@ -104,6 +109,7 @@ function Login() {
         </form>
         <p>
               Dont have an account?<Link to ="/register">Register Here</Link>
+              <button onClick={() => navigate('/register')}>Switch to Register</button>
         </p>
       </div>
 

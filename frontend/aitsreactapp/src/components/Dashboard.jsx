@@ -1,8 +1,10 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Dashboard() {
   const [stats, setStats] = useState({ open: 0, in_progress: 0, resolved: 0 });
+  console.log('Dashboard: rendered');
 
   useEffect(() => {
     const fetchStats = async () => {
