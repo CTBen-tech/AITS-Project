@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import api_views
-from .views import LoginView, RegisterView, IssueListCreateView,
+from .views import LoginView, RegisterView, IssueListCreateView
 
 router = routers.DefaultRouter()
 
