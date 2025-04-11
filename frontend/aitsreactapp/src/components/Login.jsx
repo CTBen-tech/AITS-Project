@@ -1,36 +1,46 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import './login.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useState } from "react";
+import axios from "axios";
+import "./login.css";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaUser,
+  FaLock,
+  FaArrowRight,
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 //import '../styles.css'; // Import the new styles.css
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetMessage, setResetMessage] = useState('');
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMessage, setResetMessage] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/token/', {
+      const response = await axios.post("http://localhost:8000/api/token/", {
         username,
         password,
       });
-      localStorage.setItem('token', response.data.access);
-      localStorage.setItem('refreshtoken', response.data.refresh);
-      console.log('Tokens set:', localStorage.getItem('token'));
-    
-      console.log('Navigating to /dashboard');
-      navigate('/dashboard', {replace: true});
-      alert('Login successful');
+      localStorage.setItem("token", response.data.access);
+      localStorage.setItem("refreshtoken", response.data.refresh);
+      console.log("Tokens set:", localStorage.getItem("token"));
+
+      console.log("Navigating to /dashboard");
+      navigate("/dashboard", { replace: true });
+      alert("Login successful");
     } catch (error) {
-      console.error('Login failed:', error.response?.data || error.message, error.response?.status);
-      alert('Login failed:', error.response?.data?.detail || error.message);
+      console.error(
+        "Login failed:",
+        error.response?.data || error.message,
+        error.response?.status
+      );
+      alert("Login failed:", error.response?.data?.detail || error.message);
     }
   };
 
@@ -41,19 +51,25 @@ function Login() {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/password_reset/', {
-        email: resetEmail,
-      });
-      console.log('Login response:', response);
-      setResetMessage('A password reset link has been sent to your email.');
+      const response = await axios.post(
+        "http://localhost:8000/api/password_reset/",
+        {
+          email: resetEmail,
+        }
+      );
+      console.log("Login response:", response);
+      setResetMessage("A password reset link has been sent to your email.");
     } catch (error) {
-      console.error('Password reset failed', error);
-      setResetMessage('Failed to send reset link. Please check your email and try again.');
+      console.error("Password reset failed", error);
+      setResetMessage(
+        "Failed to send reset link. Please check your email and try again."
+      );
     }
   };
 
   return (
     <div className="login-page">
+      <h2 className="login-title">AITS</h2>
       <div className="login-container">
         {/* Title */}
         <h2 className="login-title">Log Into Your Account</h2>
@@ -76,7 +92,7 @@ function Login() {
           <div className="input-container">
             <FaLock className="input-icon" />
             <input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +101,7 @@ function Login() {
             <div
               className="password-toggle"
               onClick={togglePasswordVisibility}
-              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
@@ -109,8 +125,10 @@ function Login() {
           </button>
         </form>
         <p>
-              Dont have an account?<Link to ="/register">Register Here</Link>
-              <button onClick={() => navigate('/register')}>Switch to Register</button>
+          Dont have an account?<Link to="/register">Register Here</Link>
+          <button onClick={() => navigate("/register")}>
+            Switch to Register
+          </button>
         </p>
       </div>
 
@@ -132,7 +150,7 @@ function Login() {
               {resetMessage && (
                 <p
                   className={`modal-message ${
-                    resetMessage.includes('Failed') ? 'error' : 'success'
+                    resetMessage.includes("Failed") ? "error" : "success"
                   }`}
                 >
                   {resetMessage}
@@ -151,7 +169,6 @@ function Login() {
                 </button>
               </div>
             </form>
-          
           </div>
         </div>
       )}
