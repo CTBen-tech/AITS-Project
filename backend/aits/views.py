@@ -43,3 +43,37 @@ class RegisterView(APIView):
         print(f"User '{username}' created successfully")
         return Response({'message':'User craeted successfully'}, status=status.HTTP_201_CREATED)
 
+class IssueListCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        issues = Issue.objects.filter(created_by=request.user)
+        serializer = IssueSerializer(issues, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        title = request.data.get('title')
+        description = request.data.get('description')
+        department_id = request.data.get('department')
+        priority = request.data.get('priority', 'low')
+        status_val = request.data.get('status', 'open')
+
+        if not all([title, description, department_id]):
+            return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            department = Department.objects.get(id=department_id)
+        except Department.DoesNotExist:
+            return Response({'error': 'Department not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        issue = Issue.objects.create(
+            title=title,
+            description=description,
+            department=department,
+            priority=priority,
+            status=status_val,
+            created_by=request.user
+        )
+
+        serializer = IssueSerializer(issue)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

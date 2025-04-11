@@ -1,0 +1,99 @@
+/* Dashboard.css */
+
+.dashboard-container {
+  padding: 24px;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.status-card {
+  padding: 16px;
+  border-radius: 8px;
+  color: #222;
+  background-color: #f0f4f8;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  transition: background 0.2s;
+}
+
+.status-card.open {
+  background-color: #dbeafe; /* light blue */
+}
+
+.status-card.in-progress {
+  background-color: #fef3c7; /* light yellow */
+}
+
+.status-card.resolved {
+  background-color: #d1fae5; /* light green */
+}
+
+.status-card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.status-card p {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.issue-form-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.issue-form-container h3 {
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.issue-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.issue-form input,
+.issue-form select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.issue-form button {
+  background-color: #2563eb;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.issue-form button:hover {
+  background-color: #1d4ed8;
+}
+
+.message {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 12px;
+}
