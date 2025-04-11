@@ -5,6 +5,7 @@ from rest_framework import status
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class LoginView(APIView):
