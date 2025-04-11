@@ -9,7 +9,6 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const apiBaseURL = process.env.REACT_APP_API_URL; //"""this is for connection to backend form env"""
 
   const handleSubmit = async (e) => {
     e.preventDefault();
