@@ -1,99 +1,179 @@
-/* Dashboard.css */
-
-.dashboard-container {
-  padding: 24px;
-  font-family: "Segoe UI", sans-serif;
-  background-color: #f5f7fa;
+/* Dashboard */
+.dashboard-page {
   min-height: 100vh;
+  background-color: #ecf0f1; /* Light gray */
+  padding: 0;
+}
+
+.dashboard-header {
+  background-color: #2980b9; /* Blue */
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .dashboard-title {
-  font-size: 28px;
-  margin-bottom: 24px;
-  color: #333;
+  margin: 0;
+  font-size: 1.8rem;
 }
 
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 40px;
+.logout-button {
+  background-color: #e74c3c; /* Red */
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.status-card {
-  padding: 16px;
+.logout-button:hover {
+  background-color: #c0392b;
+}
+
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profile-summary {
+  background-color: white;
+  padding: 1rem;
   border-radius: 8px;
-  color: #222;
-  background-color: #f0f4f8;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-  transition: background 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
 }
 
-.status-card.open {
-  background-color: #dbeafe; /* light blue */
+.stats-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.status-card.in-progress {
-  background-color: #fef3c7; /* light yellow */
+.stat-card {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
 }
 
-.status-card.resolved {
-  background-color: #d1fae5; /* light green */
+.stat-open {
+  background-color: #e74c3c; /* Red */
 }
 
-.status-card h3 {
-  font-size: 16px;
-  margin-bottom: 8px;
+.stat-in-progress {
+  background-color: #f1c40f; /* Yellow */
 }
 
-.status-card p {
-  font-size: 24px;
-  font-weight: bold;
+.stat-resolved {
+  background-color: #2ecc71; /* Green */
 }
 
-.issue-form-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+.stat-card h3 {
+  margin: 0 0 0.5rem;
 }
 
-.issue-form-container h3 {
-  margin-bottom: 16px;
-  font-size: 20px;
+.new-issue-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
 }
 
 .issue-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 1rem;
 }
 
-.issue-form input,
-.issue-form select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+.textarea-field {
+  padding: 0.8rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 5px;
+  font-size: 1rem;
+  resize: vertical;
 }
 
-.issue-form button {
-  background-color: #2563eb;
+.submit-button {
+  background-color: #2ecc71; /* Green */
   color: white;
-  padding: 10px 16px;
+  padding: 0.8rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s;
 }
 
-.issue-form button:hover {
-  background-color: #1d4ed8;
+.submit-button:hover {
+  background-color: #27ae60;
 }
 
-.message {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 12px;
+.issues-section {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.filter-button {
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  background-color: #3498db;
+  color: white;
+}
+
+.issues-list {
+  list-style: none;
+  padding: 0;
+}
+
+.issue-item {
+  padding: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.issue-item h3 {
+  margin: 0 0 0.5rem;
+  color: #2c3e50;
+}
+
+.issue-item p {
+  margin: 0 0 0.5rem;
+  color: #7f8c8d;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.status.open {
+  background-color: #e74c3c;
+}
+
+.status.in_progress {
+  background-color: #f1c40f;
+}
+
+.status.resolved {
+  background-color: #2ecc71;
 }
