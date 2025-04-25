@@ -25,7 +25,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/token/", {
+      const response = await axios.post("https://aits-project.onrender.com/api/token/", {
         username,
         password,
       });
@@ -54,7 +54,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/password_reset/",
+        "https://aits-project.onrender.com/api/password_reset/",
         {
           email: resetEmail,
         }
