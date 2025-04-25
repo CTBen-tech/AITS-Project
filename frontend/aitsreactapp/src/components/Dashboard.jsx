@@ -8,7 +8,7 @@ function Dashboard() {
   const [issues, setIssues] = useState([]);
   const [filter, setFilter] = useState('all'); 
   const [newIssue, setNewIssue] = useState({ title: '', description: '' });
-  const [studentInfo, setStudentInfo] = useState({ name: 'Test Student', id: 'S12345' }); // Mock, replace with API call if available
+  const [studentInfo] = useState({ name: 'Test Student', id: 'S12345' }); // Mock, replace with API call if available
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
