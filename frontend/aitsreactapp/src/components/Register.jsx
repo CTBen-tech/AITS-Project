@@ -20,7 +20,7 @@ const Register = () => {
     console.log("Registration Submitted:", data);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/register/",
+        "https://aits-project.onrender.com/api/register/",
         data
       );
       console.log("Registration Success:", response.data);
