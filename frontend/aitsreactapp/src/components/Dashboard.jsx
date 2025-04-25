@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';
-import 'dashboard.css';
 
 function Dashboard() {
   const [stats, setStats] = useState({ open: 0, in_progress: 0, resolved: 0 });
