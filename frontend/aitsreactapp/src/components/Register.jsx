@@ -10,28 +10,42 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
+  // Add loading and error states
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
+      setLoading(false);
       return;
     }
+
     const data = { username, email, password };
     console.log("Registration Submitted:", data);
+
     try {
-      // Add headers and configuration
+      // Use the correct URL
+      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+      console.log("Using API URL:", BASE_URL); // Debug log
+
       const response = await axios.post(
-        "https://aits-project.onrender.com/api/register/",
+        `${BASE_URL}/api/register/`,
         data,
         {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
-          withCredentials: true // Important for CORS
+          // Remove withCredentials if not using cookies
+          // withCredentials: true
         }
       );
-      
+
       console.log("Registration Success:", response.data);
       alert("Registration successful! Please login.");
       setUsername("");
@@ -40,40 +54,30 @@ const Register = () => {
       setConfirmPassword("");
       navigate("/login");
     } catch (error) {
-      // Enhanced error logging
       console.error("Registration Error Details:", {
         message: error.message,
         response: error.response,
-        data: error.response?.data,
-        status: error.response?.status
+        status: error.response?.status,
+        data: error.response?.data
       });
 
-      // More descriptive error message
-      const errorMessage = error.response?.data?.error 
-        || error.response?.data?.message 
-        || error.message 
-        || "Registration failed. Please try again later.";
+      // Set more user-friendly error message
+      setError(
+        error.response?.data?.error || 
+        error.response?.data?.message || 
+        "Unable to connect to the server. Please try again later."
+      );
 
-      alert(`Registration failed: ${errorMessage}`);
+      alert(`Registration failed: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // Test connection when component mounts
-  React.useEffect(() => {
-    const testConnection = async () => {
-      try {
-        await axios.options("https://aits-project.onrender.com/api/register/");
-        console.log("Backend connection test successful");
-      } catch (error) {
-        console.error("Backend connection test failed:", error.message);
-      }
-    };
-    testConnection();
-  }, []);
 
   return (
     <div className="register-container">
       <h2>Create an Account</h2>
+      {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Username</label>
@@ -82,6 +86,7 @@ const Register = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
         <div>
@@ -91,6 +96,7 @@ const Register = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
         <div>
@@ -100,6 +106,7 @@ const Register = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
         <div>
@@ -109,9 +116,12 @@ const Register = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
       <p>
         Already have an account? <Link to="/login">Login here</Link>
