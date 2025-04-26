@@ -19,28 +19,57 @@ const Register = () => {
     const data = { username, email, password };
     console.log("Registration Submitted:", data);
     try {
+      // Add headers and configuration
       const response = await axios.post(
         "https://aits-project.onrender.com/api/register/",
-        data
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          withCredentials: true // Important for CORS
+        }
       );
+      
       console.log("Registration Success:", response.data);
       alert("Registration successful! Please login.");
       setUsername("");
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      navigate("/login"); // Navigate to login
+      navigate("/login");
     } catch (error) {
-      console.error(
-        "Registration Failed:",
-        error.response?.data || error.message,
-        error.response?.status
-      );
-      alert(
-        `Registration failed: ${error.response?.data?.error || error.message}`
-      );
+      // Enhanced error logging
+      console.error("Registration Error Details:", {
+        message: error.message,
+        response: error.response,
+        data: error.response?.data,
+        status: error.response?.status
+      });
+
+      // More descriptive error message
+      const errorMessage = error.response?.data?.error 
+        || error.response?.data?.message 
+        || error.message 
+        || "Registration failed. Please try again later.";
+
+      alert(`Registration failed: ${errorMessage}`);
     }
   };
+
+  // Test connection when component mounts
+  React.useEffect(() => {
+    const testConnection = async () => {
+      try {
+        await axios.options("https://aits-project.onrender.com/api/register/");
+        console.log("Backend connection test successful");
+      } catch (error) {
+        console.error("Backend connection test failed:", error.message);
+      }
+    };
+    testConnection();
+  }, []);
 
   return (
     <div className="register-container">
