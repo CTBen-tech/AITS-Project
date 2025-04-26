@@ -18,14 +18,13 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from aits.views import RegisterView  # LoginView removed if unused
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('aits.urls')),
+    path('api/', include('aits.urls')),  # This includes all your API routes
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
-    path('api/register/', csrf_exempt(RegisterView.as_view()), name='register'),  # Added
+    # Removed duplicate register path since it's in aits.urls
     re_path(r'^.*$', TemplateView.as_view(template_name="index.html"), name='home'),
 ]
