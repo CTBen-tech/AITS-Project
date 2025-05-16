@@ -31,6 +31,9 @@ const Register = () => {
     try {
       // Use the correct URL
       const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+      const DJANGO_URL = process.env.REACT_APP_DJANGO_URL || "http://127.0.0.1:8000";
+
+      console.log("Using Django Backend URL:", DJANGO_URL);
       console.log("Using API URL:", BASE_URL); // Debug log
 
       const response = await axios.post(
