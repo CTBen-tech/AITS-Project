@@ -3,6 +3,14 @@ from django.contrib.auth.models import AbstractUser #this line imports the abstr
 
 # Create your models here.
 class CustomUser(AbstractUser):
+    is_admin = models.BooleanField(default=False)
+    is_lecturer = models.BooleanField(default=False)
+    is_registra = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.username
+
     Roles = (
         ('admin','Admin'),
         ('lecturer','Lecturer'),
