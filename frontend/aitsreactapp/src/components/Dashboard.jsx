@@ -78,6 +78,7 @@ function Dashboard() {
   };
 
   return (
+    
     <div className="dashboard-page">
       <header className="dashboard-header">
         <h1 className="dashboard-title">Student Issue Dashboard</h1>
@@ -168,13 +169,13 @@ function Dashboard() {
     </div>
   );
 }
-function Home() {
-  return (
+
+  
     <div className="mt-4">
       <h1>Welcome to the School Management System</h1>
       <p>Manage students, teachers, and courses with ease.</p>
     </div>
-  );
-}
+  
+
 
 export default Dashboard;
