@@ -34,7 +34,7 @@ const Register = () => {
       console.log("Using API URL:", BASE_URL); // Debug log
 
       const response = await axios.post(
-        `${BASE_URL}/api/register/`,
+        `${BASE_URL}/register/`,
         data,
         {
           headers: {
