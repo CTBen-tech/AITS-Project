@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
+from .serializers import CustomUserSerializer
 
 # Create your views here.
 class LoginView(APIView):
@@ -22,10 +23,10 @@ class LoginView(APIView):
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
-    def post(self, request):
-        username = request.data.get('username')
-        email = request.data.get('email')
-        password = request.data.get('password')
+   def post(self, request):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
         print(f"Registering: username = {username}, email={email}, password = {password}")
         if not all([username, email, password]):
             return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)

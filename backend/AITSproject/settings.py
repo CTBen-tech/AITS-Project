@@ -60,10 +60,10 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "https://aits-project.onrender.com",
-    #"http://localhost:3000",
-    #"http://127.0.0.1:3000",
-    #"http://localhost:8000",
-    #"http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 CORS_ALLOW_METHODS = [
     "GET",
@@ -119,6 +119,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
+AUTH_USER_MODEL = 'aits.CustomUser'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
