@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
     # Removed duplicate register path since it's in aits.urls
-    re_path(r'^.*$', TemplateView.as_view(template_name="index.html"), name='home'),
+    re_path(r'^.*', TemplateView.as_view(template_name="index.html"), name='home'),
 ]
