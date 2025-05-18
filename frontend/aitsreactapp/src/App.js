@@ -10,7 +10,7 @@ import Dashboard from './components/Dashboard';
 import StudentDashboard from './components/StudentDashboard';
 import RegistrarDashboard from './components/RegistrarDashboard';
 import LecturerDashboard from './components/LecturerDashboard'
-import ProtectedRoute from './components/ProtectedRoute';
+///import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './ErrorBoundary'; // Adjust the path as necessary
 
 
