@@ -6,7 +6,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, IssueSerializer
+from .models import Issue, Department
+
 
 # Create your views here.
 class LoginView(APIView):
@@ -19,31 +21,37 @@ class LoginView(APIView):
             return Response({'message': f' welcome, {username}'}, status=status.HTTP_200_OK)
             return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
         return Response({'error': 'invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = CustomUserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        print(f"Registering: username = {username}, email={email}, password = {password}")
+        # Extract data properly
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        # Validate required fields
         if not all([username, email, password]):
             return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Check if username or email already exists before saving
         if User.objects.filter(username=username).exists():
-            print(f"Username '{username}' already exists")
-            return Response({'error':'User name already Exists'}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
         if User.objects.filter(email=email).exists():
-            print(f"Email '{email}' already exists")
-            return Response({'error':'User Email already Exists'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Use serializer to create user
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            user.is_active = True
+            user.save()
+            return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
         
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.is_active = True
-        user.save()
-        print(f"User '{username}' created successfully")
-        return Response({'message':'User craeted successfully'}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class IssueListCreateView(APIView):
     permission_classes = [IsAuthenticated]
