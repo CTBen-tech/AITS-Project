@@ -21,6 +21,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('api/', include('aits.urls')),  # This includes all your API routes
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
