@@ -63,6 +63,7 @@ python-json-logger==3.3.0
 PyYAML==6.0.2
 pyzmq==26.4.0
 referencing==0.36.2
+rest_framework_simplejwt==5.4.0
 requests==2.32.3
 rfc3339-validator==0.1.4
 rfc3986-validator==0.1.1
