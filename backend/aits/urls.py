@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from . import api_views
-from .views import LoginView, RegisterView, IssueListCreateView
+from .views import LoginView, RegisterView, IssueListCreateView, CustomTokenObtainPairView
 from django.views.decorators.csrf import csrf_exempt
 
 router = routers.DefaultRouter()
@@ -24,4 +24,5 @@ urlpatterns = [
     # Auth routes
     path('login/', csrf_exempt(LoginView.as_view()), name='login'),
     path('register/', csrf_exempt(RegisterView.as_view()), name='register'),
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]
