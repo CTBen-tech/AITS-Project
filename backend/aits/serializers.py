@@ -17,6 +17,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
             is_admin=validated_data.get('is_admin', False),
             is_registra=validated_data.get('is_registra', False)
         )
+        user.is_active = True
+        user.save()
         return user
 
 
