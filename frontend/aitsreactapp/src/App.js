@@ -7,6 +7,9 @@ import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import StudentDashboard from './components/StudentDashboard';
+import RegistrarDashboard from './components/RegistrarDashboard';
+import LecturerDashboard from './components/LecturerDashboard'
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './ErrorBoundary'; // Adjust the path as necessary
 
@@ -20,16 +23,13 @@ function App() {
     <ErrorBoundary>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route path="/" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/registrar" element={<RegistrarDashboard />} />
+        <Route path="/lecturer" element={<LecturerDashboard />} />
+      
       </Routes>
     </ErrorBoundary>
   </Router>     

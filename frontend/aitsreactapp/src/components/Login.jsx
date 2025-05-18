@@ -9,7 +9,6 @@ import {
   FaEye,
   FaEyeSlash,
 } from "react-icons/fa";
-//import '../styles.css'; // Import the new styles.css
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -20,8 +19,6 @@ function Login() {
   const [resetMessage, setResetMessage] = useState("");
   const navigate = useNavigate();
 
-   //"""this is for connection to backend form env"""
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -31,10 +28,24 @@ function Login() {
       });
       localStorage.setItem("token", response.data.access);
       localStorage.setItem("refreshtoken", response.data.refresh);
+      localStorage.setItem("role", response.data.role); // Store role
       console.log("Tokens set:", localStorage.getItem("token"));
+      console.log("Role:", response.data.role);
 
-      console.log("Navigating to /dashboard");
-      navigate("/dashboard", { replace: true });
+      // Navigate based on role
+      switch (response.data.role) {
+        case 'student':
+          navigate("/student", { replace: true });
+          break;
+        case 'registrar':
+          navigate("/registrar", { replace: true });
+          break;
+        case 'lecturer':
+          navigate("/lecturer", { replace: true });
+          break;
+        default:
+          navigate("/dashboard", { replace: true });
+      }
       alert("Login successful");
     } catch (error) {
       console.error(
@@ -42,7 +53,7 @@ function Login() {
         error.response?.data || error.message,
         error.response?.status
       );
-      alert("Login failed:", error.response?.data?.detail || error.message);
+      alert(error.response?.data?.detail || "Login failed");
     }
   };
 
@@ -59,10 +70,10 @@ function Login() {
           email: resetEmail,
         }
       );
-      console.log("Login response:", response);
+      console.log("Password reset response:", response);
       setResetMessage("A password reset link has been sent to your email.");
     } catch (error) {
-      console.error("Password reset failed", error);
+      console.error("Password reset failed:", error);
       setResetMessage(
         "Failed to send reset link. Please check your email and try again."
       );
@@ -73,12 +84,8 @@ function Login() {
     <div className="login-page">
       <h2 className="login-title">AITS</h2>
       <div className="login-container">
-        {/* Title */}
         <h2 className="login-title">Log Into Your Account</h2>
-
-        {/* Form */}
         <form onSubmit={handleLogin} className="login-form">
-          {/* Email or Username Field */}
           <div className="input-container">
             <FaUser className="input-icon" />
             <input
@@ -89,8 +96,6 @@ function Login() {
               className="input-field"
             />
           </div>
-
-          {/* Password Field */}
           <div className="input-container">
             <FaLock className="input-icon" />
             <input
@@ -108,8 +113,6 @@ function Login() {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
           </div>
-
-          {/* Forgot Password Link */}
           <div className="forgot-password">
             <button
               type="button"
@@ -119,22 +122,18 @@ function Login() {
               Forgot Password?
             </button>
           </div>
-
-          {/* Sign In Button */}
           <button type="submit" className="signin-button">
             <FaArrowRight />
             Sign in
           </button>
         </form>
         <p>
-          Dont have an account?<Link to="/register">Register Here</Link>
+          Don't have an account? <Link to="/register">Register Here</Link>
           <button onClick={() => navigate("/register")}>
             Switch to Register
           </button>
         </p>
       </div>
-
-      {/* Forgot Password Modal */}
       {showForgotPassword && (
         <div className="modal-overlay">
           <div className="modal-content">
