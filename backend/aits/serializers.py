@@ -8,6 +8,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
+        role = validated_data.pop('role')
         user = CustomUser.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
@@ -19,6 +20,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         )
         user.is_active = True
         user.save()
+        # Create UserProfile with role
+        UserProfile.objects.create(user=user, role=role)
         return user
 
 

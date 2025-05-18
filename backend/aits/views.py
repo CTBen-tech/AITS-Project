@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
@@ -87,3 +89,32 @@ class IssueListCreateView(APIView):
 
         serializer = IssueSerializer(issue)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add role to token payload
+        try:
+            token['role'] = user.profile.role
+        except AttributeError:
+            token['role'] = 'student'  # Default role if profile missing
+        return token
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+        # Include role in response
+        user = serializer.user
+        try:
+            role = user.profile.role
+        except AttributeError:
+            role = 'student'
+        return Response({
+            'access': str(data['access']),
+            'refresh': str(data['refresh']),
+            'role': role
+        }, status=status.HTTP_200_OK)
