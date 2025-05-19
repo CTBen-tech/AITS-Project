@@ -3,16 +3,31 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/register.css";
 
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate();
-
-  // Add loading and error states
+  //loading error states
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +44,6 @@ const Register = () => {
     console.log("Registration Submitted:", data);
 
     try {
-      // Use the correct URL
       const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
       const DJANGO_URL = process.env.REACT_APP_DJANGO_URL || "http://127.0.0.1:8000";
 
@@ -43,9 +57,10 @@ const Register = () => {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            "X-CSRFToken": getCookie("csrftoken"), // Uncomment if CSRF is enforced
           },
           // Remove withCredentials if not using cookies
-          // withCredentials: true
+           withCredentials: true
         }
       );
 

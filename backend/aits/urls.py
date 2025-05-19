@@ -22,7 +22,7 @@ urlpatterns = [
     path('issues/<int:pk>/delete/', api_views.IssueDeleteView.as_view()),
     
     # Auth routes
-    path('login/', csrf_exempt(LoginView.as_view()), name='login'),
-    path('register/', csrf_exempt(RegisterView.as_view()), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
 ]

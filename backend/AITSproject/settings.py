@@ -78,6 +78,21 @@ CORS_ALLOW_HEADERS = [
     "authorization",
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+# For cross-origin CSRF:
+CSRF_TRUSTED_ORIGINS = [
+    "https://aits-project.onrender.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+# For cross-origin cookies (if using session/cookie auth)
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
