@@ -1,24 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/register.css";
 
-
-
-function getCookie(name) {
-  let cookieValue = null;
-  if (document.cookie && document.cookie !== "") {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-      const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === name + "=") {
-        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-        break;
-      }
-    }
-  }
-  return cookieValue;
-}
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -26,13 +10,12 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //loading error states
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
+  
     const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
-    axios.get(`${BASE_URL}/register/`, { withCredentials: true }).catch(() => {});
-  }, []);
+     
 
 
   const handleSubmit = async (e) => {
@@ -50,7 +33,7 @@ const Register = () => {
     console.log("Registration Submitted:", data);
 
     try {
-      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com/register/";
       const DJANGO_URL = process.env.REACT_APP_DJANGO_URL || "http://127.0.0.1:8000";
 
       console.log("Using Django Backend URL:", DJANGO_URL);
@@ -63,10 +46,7 @@ const Register = () => {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            "X-CSRFToken": getCookie("csrftoken"), // Uncomment if CSRF is enforced
           },
-          // Remove withCredentials if not using cookies
-           withCredentials: true
         }
       );
 

@@ -1,60 +1,56 @@
-from django.shortcuts import render
+from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import CustomUserSerializer, IssueSerializer
 from .models import Issue, Department
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
-
-# Create your views here.
+# JWT-based login (for demonstration; normally use /api/token/)
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            return Response({'message': f' welcome, {username}'}, status=status.HTTP_200_OK)
-            return Response({'message': 'Login successful'}, status=status.HTTP_200_OK)
-        return Response({'error': 'invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': f'Welcome, {username}'}, status=status.HTTP_200_OK)
+        return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
+@method_decorator(csrf_exempt, name='dispatch')
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        # Extract data properly
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
 
-        # Validate required fields
         if not all([username, email, password]):
             return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Check if username or email already exists before saving
         if User.objects.filter(username=username).exists():
             return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(email=email).exists():
             return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Use serializer to create user
         serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             user.is_active = True
             user.save()
             return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
-        
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+    
+    
 class IssueListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -89,15 +85,15 @@ class IssueListCreateView(APIView):
 
         serializer = IssueSerializer(issue)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        # Add role to token payload
         try:
             token['role'] = user.profile.role
         except AttributeError:
-            token['role'] = 'student'  # Default role if profile missing
+            token['role'] = 'student'
         return token
 
 class CustomTokenObtainPairView(TokenObtainPairView):
@@ -107,7 +103,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-        # Include role in response
         user = serializer.user
         try:
             role = user.profile.role

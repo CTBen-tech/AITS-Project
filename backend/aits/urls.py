@@ -1,8 +1,8 @@
-from django.urls import include, path
+from django.urls import path
 from rest_framework import routers
 from . import api_views
 from .views import LoginView, RegisterView, IssueListCreateView, CustomTokenObtainPairView
-from django.views.decorators.csrf import csrf_exempt
+from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 
 router = routers.DefaultRouter()
 
@@ -21,6 +21,11 @@ urlpatterns = [
     path('issues/<int:pk>/update/', api_views.IssueUpdateView.as_view()),
     path('issues/<int:pk>/delete/', api_views.IssueDeleteView.as_view()),
     
+    #JWT AUTH endpoints
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+
     # Auth routes
     path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
