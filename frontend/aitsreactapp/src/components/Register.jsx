@@ -14,9 +14,6 @@ const Register = () => {
   const navigate = useNavigate();
   //loading error states
   
-    const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
-     
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +30,7 @@ const Register = () => {
     console.log("Registration Submitted:", data);
 
     try {
-      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com/register/";
+      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
       const DJANGO_URL = process.env.REACT_APP_DJANGO_URL || "http://127.0.0.1:8000";
 
       console.log("Using Django Backend URL:", DJANGO_URL);
