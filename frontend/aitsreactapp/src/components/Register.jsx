@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/register.css";
 
+useEffect(() => {
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+  axios.get(`${BASE_URL}/register/`, { withCredentials: true }).catch(() => {});
+}, []);
 
 function getCookie(name) {
   let cookieValue = null;
