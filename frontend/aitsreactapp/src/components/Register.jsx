@@ -25,6 +25,8 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   //loading error states
   const [loading, setLoading] = useState(false);
   useEffect(() => {
@@ -32,8 +34,6 @@ const Register = () => {
     axios.get(`${BASE_URL}/register/`, { withCredentials: true }).catch(() => {});
   }, []);
 
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
