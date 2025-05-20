@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 from corsheaders.defaults import default_headers
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -62,10 +63,16 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "https://aits-project.onrender.com",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+
 ]
+
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Adjust as needed
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # Adjust as needed
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 CORS_ALLOW_METHODS = [
     "GET",
     "POST",

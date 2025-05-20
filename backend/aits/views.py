@@ -50,7 +50,7 @@ class RegisterView(APIView):
             return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-    
+
 class IssueListCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -113,3 +113,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'refresh': str(data['refresh']),
             'role': role
         }, status=status.HTTP_200_OK)
+    
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({'message': f'Hello, {request.user.username}! This is a protected endpoint.'})
