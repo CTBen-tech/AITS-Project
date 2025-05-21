@@ -18,6 +18,7 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+BASE_ROOT = Path(__file__).resolve().parents[1]
 
 
 # Quick-start development settings - unsuitable for production
@@ -82,16 +83,14 @@ CORS_ALLOW_METHODS = [
     "DELETE",
 ]
 CORS_ALLOW_HEADERS = list(default_headers)
-CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = False
 
 # For cross-origin CSRF:
 CSRF_TRUSTED_ORIGINS = [
     "https://aits-project.onrender.com",
     "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
+   
 ]
 
 REST_FRAMEWORK = {

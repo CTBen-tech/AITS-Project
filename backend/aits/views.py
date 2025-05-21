@@ -4,15 +4,15 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework.response import Response
 from rest_framework import status
-from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from .serializers import CustomUserSerializer, IssueSerializer
+from .serializers import CustomUserSerializer, RegisterSerializer, IssueSerializer
 from .models import Issue, Department
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-# JWT-based login (for demonstration; normally use /api/token/)
+User = get_user_model()
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -29,27 +29,13 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        username = request.data.get('username')
-        email = request.data.get('email')
-        password = request.data.get('password')
-
-        if not all([username, email, password]):
-            return Response({'error': 'All fields are required'}, status=status.HTTP_400_BAD_REQUEST)
-
-        if User.objects.filter(username=username).exists():
-            return Response({'error': 'Username already exists'}, status=status.HTTP_400_BAD_REQUEST)
-
-        if User.objects.filter(email=email).exists():
-            return Response({'error': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
-
-        serializer = CustomUserSerializer(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             user.is_active = True
             user.save()
             return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
 
 class IssueListCreateView(APIView):
     permission_classes = [IsAuthenticated]
@@ -113,7 +99,7 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             'refresh': str(data['refresh']),
             'role': role
         }, status=status.HTTP_200_OK)
-    
+
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
