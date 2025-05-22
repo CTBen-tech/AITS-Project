@@ -66,6 +66,7 @@ const getCSRFToken = async () => {
           'Accept': 'application/json',
           'X-CSRFToken': csrfToken, // Include CSRF token
         },
+        withCredentials: true,
       }
     );
 

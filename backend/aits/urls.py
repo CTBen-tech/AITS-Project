@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Auth routes
     path('api/login/', LoginView.as_view(), name='login'),
-    path('register/', RegisterView.as_view(), name='register'),
+    path('api/register/', RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("csrf/", csrf_token_view, name="csrf"), 
