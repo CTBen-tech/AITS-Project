@@ -10,6 +10,15 @@ from .serializers import CustomUserSerializer, RegisterSerializer, IssueSerializ
 from .models import Issue, Department
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.middleware.csrf import get_token
+
+def csrf_token_view(request):
+    return JsonResponse({'csrfToken': get_token(request)})
+
+def set_csrf_cookie(request):
+    response = JsonResponse({'message': 'CSRF cookie set'})
+    response["X-CSRFToken"] = get_token(request)  # Attach CSRF token in header
+    return response
 
 User = get_user_model()
 

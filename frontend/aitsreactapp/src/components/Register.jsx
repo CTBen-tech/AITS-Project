@@ -13,39 +13,61 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   //loading error states
+
+  const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+
+const getCSRFToken = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}/csrf/`, {
+      withCredentials: true, // Ensures cookies are sent
+    });
+    console.log("CSRF Token Retrieved:", response.data.csrfToken);
+    return response.data.csrfToken; 
+  } catch (error) {
+    console.error("CSRF Token Retrieval Error:", error);
+    return null;
+  }
+};
+
+
   
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
+  e.preventDefault();
+  setLoading(true);
+  setError(null);
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    setLoading(false);
+    return;
+  }
+
+  const data = { username, email, password };
+  console.log("Registration Submitted:", data);
+
+  try {
+    console.log("Using API URL:", BASE_URL);
+
+    // **Retrieve CSRF token before submitting the request**
+    const csrfToken = await getCSRFToken();
+    if (!csrfToken) {
+      alert("Failed to retrieve CSRF token. Please try again.");
       setLoading(false);
       return;
     }
 
-    const data = { username, email, password };
-    console.log("Registration Submitted:", data);
-
-    try {
-      const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
-      const DJANGO_URL = process.env.REACT_APP_DJANGO_URL || "http://127.0.0.1:8000";
-
-      console.log("Using Django Backend URL:", DJANGO_URL);
-      console.log("Using API URL:", BASE_URL); // Debug log
-
-      const response = await axios.post(
-        `${BASE_URL}/register/`,
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-        }
-      );
+    const response = await axios.post(
+      `${BASE_URL}/register/`,
+      data,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRFToken': csrfToken, // Include CSRF token
+        },
+      }
+    );
 
       console.log("Registration Success:", response.data);
       alert("Registration successful! Please login.");
@@ -59,10 +81,9 @@ const Register = () => {
         message: error.message,
         response: error.response,
         status: error.response?.status,
-        data: error.response?.data
+        data: error.response?.data,
       });
 
-      // Set more user-friendly error message
       setError(
         error.response?.data?.error || 
         error.response?.data?.message || 
@@ -74,6 +95,7 @@ const Register = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="register-container">

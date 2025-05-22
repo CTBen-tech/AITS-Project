@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework import routers
 from . import views
 from . import api_views
-from .views import LoginView, RegisterView, IssueListCreateView, CustomTokenObtainPairView
+from .views import LoginView, RegisterView, IssueListCreateView, CustomTokenObtainPairView, csrf_token_view, set_csrf_cookie
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
 
 router = routers.DefaultRouter()
@@ -32,6 +32,8 @@ urlpatterns = [
     path('register/', views.RegisterView.as_view(), name='register'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("csrf/", csrf_token_view, name="csrf"), 
+    path("set-csrf/", set_csrf_cookie, name="set-csrf"),  # Manually set CSRF cookie
 
     path('api/protected/', views.ProtectedView.as_view(), name='protected'),
 ]

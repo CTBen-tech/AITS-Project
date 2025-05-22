@@ -62,8 +62,9 @@ MIDDLEWARE = [
 #added for the cors
 
 CORS_ALLOWED_ORIGINS = [
-    "https://aits-project.onrender.com",
     "http://localhost:3000",
+    "https://aits-project.onrender.com",
+    
 
 ]
 
@@ -88,8 +89,8 @@ CORS_ALLOW_CREDENTIALS = False
 
 # For cross-origin CSRF:
 CSRF_TRUSTED_ORIGINS = [
-    "https://aits-project.onrender.com",
-    "http://localhost:3000",
+    'https://aits-project.onrender.com',
+    #"http://localhost:3000",
    
 ]
 

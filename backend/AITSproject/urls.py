@@ -19,6 +19,13 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from django.views.decorators.csrf import csrf_exempt
+from aits.views import csrf_token_view, set_csrf_cookie  # Import CSRF-related views
+
+urlpatterns = [
+    path("csrf/", csrf_token_view, name="csrf"),  # CSRF token retrieval
+    path("set-csrf/", set_csrf_cookie, name="set-csrf"),  # CSRF cookie setup
+]
+
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
@@ -26,6 +33,9 @@ urlpatterns = [
     path('api/', include('aits.urls')),  # This includes all your API routes
     path('api/token/', csrf_exempt(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/', csrf_exempt(TokenRefreshView.as_view()), name='token_refresh'),
+    path("csrf/", csrf_token_view, name="csrf"),  # CSRF token retrieval
+    path("set-csrf/", set_csrf_cookie, name="set-csrf"),  # CSRF cookie setup
+
     # Removed duplicate register path since it's in aits.urls
     re_path(r'^.*', TemplateView.as_view(template_name="index.html"), name='home'),
 ]
