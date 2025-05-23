@@ -58,7 +58,7 @@ const getCSRFToken = async () => {
     }
 
     const response = await axios.post(
-      `${BASE_URL}/api/register/`,
+      `https://aits-project.onrender.com/api/register/`,
       data,
       {
         headers: {
