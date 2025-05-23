@@ -33,7 +33,7 @@ class LoginView(APIView):
             return Response({'message': f'Welcome, {username}'}, status=status.HTTP_200_OK)
         return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
-#
+@method_decorator(csrf_exempt, name="dispatch")
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
