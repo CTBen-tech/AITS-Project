@@ -16,6 +16,7 @@ import dj_database_url
 from corsheaders.defaults import default_headers
 from datetime import timedelta
 
+APPEND_SLASH = True
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 BASE_ROOT = Path(__file__).resolve().parents[1]
