@@ -14,7 +14,7 @@ const Register = () => {
   const navigate = useNavigate();
   //loading error states
 
-  const BASE_URL = process.env.REACT_APP_API_URL || "https://aits-project.onrender.com";
+  const BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000" //"https://aits-project.onrender.com";
 
 const getCSRFToken = async () => {
   try {
@@ -58,7 +58,7 @@ const getCSRFToken = async () => {
     }
 
     const response = await axios.post(
-      `https://aits-project.onrender.com/api/register/`,
+      `http://127.0.0.1:8000/api/register/`,
       data,
       {
         headers: {
