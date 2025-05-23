@@ -58,7 +58,7 @@ const getCSRFToken = async () => {
     }
 
     const response = await axios.post(
-      `${BASE_URL}/register/`,
+      `${BASE_URL}/api/register/`,
       data,
       {
         headers: {
