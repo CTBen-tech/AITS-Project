@@ -24,7 +24,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/token/`, {
+      const response = await axios.post(`${API_URL}/api/token/`, {
         username,
         password,
       });
