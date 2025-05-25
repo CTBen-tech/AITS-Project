@@ -1,11 +1,14 @@
 from django.urls import path
-from rest_framework import routers
-from . import views
+from rest_framework_simplejwt.views import TokenRefreshView
 from . import api_views
-from .views import LoginView, RegisterView, IssueListCreateView, CustomTokenObtainPairView, csrf_token_view, set_csrf_cookie
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
-router = routers.DefaultRouter()
+from .views import (
+    RegisterView,
+    IssueListCreateView,
+    CustomTokenObtainPairView,
+    csrf_token_view,
+    set_csrf_cookie,
+    ProtectedView,
+)
 
 urlpatterns = [
     # User routes
@@ -22,18 +25,17 @@ urlpatterns = [
     path('issues/<int:pk>/update/', api_views.IssueUpdateView.as_view()),
     path('issues/<int:pk>/delete/', api_views.IssueDeleteView.as_view()),
 
-    # JWT AUTH endpoints
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # JWT auth endpoints
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # Auth routes
-    path('login/', LoginView.as_view(), name='login'),
     path('register/', RegisterView.as_view(), name='register'),
 
     # CSRF endpoints
-    path("csrf/", csrf_token_view, name="csrf"),
-    path("set-csrf/", set_csrf_cookie, name="set-csrf"),
+    path('csrf/', csrf_token_view, name='csrf'),
+    path('set-csrf/', set_csrf_cookie, name='set-csrf'),
 
     # Protected test endpoint
-    path('api/protected/', views.ProtectedView.as_view(), name='protected'),
+    path('api/protected/', ProtectedView.as_view(), name='protected'),
 ]

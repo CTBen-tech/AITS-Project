@@ -1,155 +1,160 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/register.css";
+import React, { useState } from 'react';
 
+// ✅ CSRF token getter using plain JavaScript
+function getCookie(name) {
+  const cookieValue = document.cookie
+    .split('; ')
+    .find(row => row.startsWith(name + '='));
+  return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+}
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  //loading error states
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    role: 'student',
+    password: '',
+    confirmPassword: '',
+  });
 
-  const BASE_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000" //"https://aits-project.onrender.com";
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-const getCSRFToken = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}/csrf/`, {
-      withCredentials: true, // Ensures cookies are sent
-    });
-    console.log("CSRF Token Retrieved:", response.data.csrfToken);
-    return response.data.csrfToken; 
-  } catch (error) {
-    console.error("CSRF Token Retrieval Error:", error);
-    return null;
-  }
-};
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
 
+  const validateForm = () => {
+    const { username, email, password, confirmPassword } = formData;
 
-  
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError(null);
-
-  if (password !== confirmPassword) {
-    alert("Passwords do not match!");
-    setLoading(false);
-    return;
-  }
-
-  const data = { username, email, password };
-  console.log("Registration Submitted:", data);
-
-  try {
-    console.log("Using API URL:", BASE_URL);
-
-    // **Retrieve CSRF token before submitting the request**
-    const csrfToken = await getCSRFToken();
-    if (!csrfToken) {
-      alert("Failed to retrieve CSRF token. Please try again.");
-      setLoading(false);
-      return;
+    if (!username || !email || !password || !confirmPassword) {
+      alert('All fields are required.');
+      return false;
     }
 
-    const response = await axios.post(
-      `http://127.0.0.1:8000/api/register/`,
-      data,
-      {
+    if (!email.includes('@') || !email.includes('.')) {
+      alert('Please enter a valid email address.');
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      alert('Passwords do not match.');
+      return false;
+    }
+
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long.');
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/register/', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-CSRFToken': csrfToken, // Include CSRF token
+          'X-CSRFToken': getCookie('csrftoken'),
         },
-        withCredentials: true,
-      }
-    );
-
-      console.log("Registration Success:", response.data);
-      alert("Registration successful! Please login.");
-      setUsername("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      navigate("/login");
-    } catch (error) {
-      console.error("Registration Error Details:", {
-        message: error.message,
-        response: error.response,
-        status: error.response?.status,
-        data: error.response?.data,
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        }),
+        credentials: 'include',
       });
 
-      setError(
-        error.response?.data?.error || 
-        error.response?.data?.message || 
-        "Unable to connect to the server. Please try again later."
-      );
+      const data = await response.json();
 
-      alert(`Registration failed: ${error.message}`);
+      if (response.ok) {
+        alert('Registration successful! You may now log in.');
+        setFormData({
+          username: '',
+          email: '',
+          role: 'student',
+          password: '',
+          confirmPassword: '',
+        });
+      } else {
+        if (data.username) {
+          alert(`Username error: ${data.username[0]}`);
+        } else if (data.email) {
+          alert(`Email error: ${data.email[0]}`);
+        } else if (data.detail) {
+          alert(`Server error: ${data.detail}`);
+        } else {
+          alert('Registration failed. Please check your inputs.');
+        }
+      }
+    } catch (error) {
+      alert(`Network or server error: ${error.message}`);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-
   return (
-    <div className="register-container">
-      <h2>Create an Account</h2>
-      {error && <div className="error-message">{error}</div>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <button type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
+    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+      <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          value={formData.username}
+          onChange={handleChange}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        <select
+          name="role"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          value={formData.role}
+          onChange={handleChange}
+        >
+          <option value="student">Student</option>
+          <option value="lecturer">Lecturer</option>
+          <option value="registrar">Registrar</option>
+          <option value="admin">Admin</option>
+        </select>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm Password"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Registering...' : 'Register'}
         </button>
       </form>
-      <p>
-        Already have an account? <Link to="/login">Login here</Link>
-      </p>
     </div>
   );
 };
