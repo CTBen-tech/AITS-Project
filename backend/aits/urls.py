@@ -26,8 +26,8 @@ urlpatterns = [
     path('issues/<int:pk>/delete/', api_views.IssueDeleteView.as_view()),
 
     # JWT auth endpoints
-    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # Auth routes
     path('register/', RegisterView.as_view(), name='register'),

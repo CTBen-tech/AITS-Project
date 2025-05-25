@@ -39,7 +39,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'role']
+        fields = ['username', 'email', 'password', 'role', 'user_id']
+        extra_kwargs = {'password': {'write_only': True}, 'user_id': {'read_only': True}}
 
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
@@ -57,6 +58,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
+            role=validated_data['role']
         )
 
         # Set role
@@ -94,9 +96,13 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
         # Add custom claims
         token['role'] = user.role
+        token['name'] = user.username
+        token['user_id'] = user.user_id
         return token
 
     def validate(self, attrs):
         data = super().validate(attrs)
         data['role'] = self.user.role
+        data['name'] = self.user.username
+        data['user_id'] = self.user.user_id
         return data

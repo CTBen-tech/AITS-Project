@@ -27,11 +27,13 @@ function Login() {
         password,
       });
 
-      const { access, refresh, role } = response.data;
+      const { access, refresh, role, name: userName, user_id } = response.data;
 
       localStorage.setItem("token", access);
       localStorage.setItem("refreshtoken", refresh);
       localStorage.setItem("role", role);
+      localStorage.setItem("name", userName);
+      localStorage.setItem("user_id", user_id); // Store the user_id
 
       console.log("Tokens set:", access);
       console.log("Role:", role);

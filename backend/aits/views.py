@@ -24,7 +24,13 @@ class RegisterView(APIView):
             user = serializer.save()
             user.is_active = True
             user.save()
-            return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
+            # Return user_id and other useful info!
+            return Response({
+                'message': 'User created successfully',
+                'user_id': user.user_id,  # <-- This is your STD001/LEC001/etc.
+                'role': user.role,
+                'name': user.get_full_name() or user.username,
+            }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CustomTokenObtainPairView(TokenObtainPairView):

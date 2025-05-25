@@ -1,6 +1,31 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser #this line imports the abstract user function in django
 
+def get_role_prefix(role):
+    role = role.lower()
+    if role == 'student':
+        return 'STD'
+    elif role == 'lecturer':
+        return 'LEC'
+    elif role == 'registrar':
+        return 'REG'
+    elif role == 'admin':
+        return 'ADM'
+    else:
+        return 'USR'
+
+def generate_role_id(role):
+    prefix = get_role_prefix(role)
+    from .models import CustomUser  # Avoid circular import if needed
+    last_user = CustomUser.objects.filter(user_id__startswith=prefix).order_by('id').last()
+    if last_user and last_user.user_id:
+        try:
+            num = int(last_user.user_id.replace(prefix, '')) + 1
+        except ValueError:
+            num = 1
+    else:
+        num = 1
+    return f"{prefix}{num:03d}"
 # Create your models here.
 class CustomUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
@@ -18,6 +43,12 @@ class CustomUser(AbstractUser):
         ('student','Student'),
     )
     role = models.CharField(max_length=10,choices=Roles, default = 'student')
+    user_id = models.CharField(max_length=10, unique=True, null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if not self.user_id and self.role:
+            self.user_id = generate_role_id(self.role)
+        super().save(*args, **kwargs)
 
     groups = models.ManyToManyField(
         'auth.Group',
