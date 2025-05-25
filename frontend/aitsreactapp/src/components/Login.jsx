@@ -67,7 +67,7 @@ function Login() {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      await axios.post(
         `${API_URL}/password_reset/`,
         { email: resetEmail }
       );
