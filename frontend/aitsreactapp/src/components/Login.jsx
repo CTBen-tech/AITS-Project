@@ -10,6 +10,8 @@ import {
   FaEyeSlash,
 } from "react-icons/fa";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +24,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/token/", {
+      const response = await axios.post(`${API_URL}/token/`, {
         username,
         password,
       });
@@ -34,9 +36,6 @@ function Login() {
       localStorage.setItem("role", role);
       localStorage.setItem("name", userName);
       localStorage.setItem("user_id", user_id); // Store the user_id
-
-      console.log("Tokens set:", access);
-      console.log("Role:", role);
 
       // 🚀 Redirect based on role
       switch (role) {
@@ -69,13 +68,11 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://aits-project.onrender.com/api/password_reset/",
+        `${API_URL}/password_reset/`,
         { email: resetEmail }
       );
-      console.log("Password reset response:", response);
       setResetMessage("A password reset link has been sent to your email.");
     } catch (error) {
-      console.error("Password reset failed:", error);
       setResetMessage("Failed to send reset link. Please check your email.");
     }
   };
