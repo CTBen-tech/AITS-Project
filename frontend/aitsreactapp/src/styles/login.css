@@ -198,7 +198,7 @@ p a {
 /* Left side */
 .register-image-section {
   width: 50%;
-  background-image: url('/path-to-your-image.webp');
+  /*background-image: url('/path-to-your-image.webp');*/
   background-size: cover;
   background-position: center;
   position: relative;
