@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import "../styles/login.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
+
 // ✅ CSRF token getter using plain JavaScript
 function getCookie(name) {
   const cookieValue = document.cookie
@@ -20,6 +21,8 @@ const Register = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -58,8 +61,7 @@ const Register = () => {
     setIsSubmitting(true);
 
     try {
-      
-const response = await fetch(`${API_URL}/api/register/`, {
+      const response = await fetch(`${API_URL}/api/register/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +79,6 @@ const response = await fetch(`${API_URL}/api/register/`, {
       const data = await response.json();
 
       if (response.ok) {
-        alert('Registration successful! You may now log in.');
         setFormData({
           username: '',
           email: '',
@@ -85,6 +86,7 @@ const response = await fetch(`${API_URL}/api/register/`, {
           password: '',
           confirmPassword: '',
         });
+        setSuccessMessage('Registration successful! Click here to go back to the login page.');
       } else {
         if (data.username) {
           alert(`Username error: ${data.username[0]}`);
@@ -101,6 +103,12 @@ const response = await fetch(`${API_URL}/api/register/`, {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleGoToLogin = () => {
+    // If you're using React Router, use navigate("/login")
+    // Otherwise, fallback to window.location for redirect
+    window.location.href = "/login";
   };
 
   return (
@@ -129,69 +137,88 @@ const response = await fetch(`${API_URL}/api/register/`, {
           <div className="form-container">
             <h2>Create an account</h2>
             <p>
-              Already have an account? <a href="#">Log in</a>
+              Already have an account? <a href="/login">Log in</a>
             </p>
-      <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div className="name-fields">
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        </div>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <select
-          name="role"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-          value={formData.role}
-          onChange={handleChange}
-        >
-          <option value="student">Student</option>
-          <option value="lecturer">Lecturer</option>
-          <option value="registrar">Registrar</option>
-          <option value="admin">Admin</option>
-        </select>
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-        <label className="checkbox-label">
-                <input type="checkbox" />
-                I agree to the <a href="#">Terms & Conditions</a>
-              </label>
-
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Registering...' : 'Register'}
-        </button>
-      </form>
-     </div>
+            <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+            {successMessage ? (
+              <div className="success-message" style={{ color: "green", textAlign: "center", marginBottom: 16 }}>
+                {successMessage} <br />
+                <button
+                  onClick={handleGoToLogin}
+                  style={{
+                    marginTop: "10px",
+                    color: "#fff",
+                    background: "#2563eb",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "8px 16px",
+                    cursor: "pointer"
+                  }}
+                >
+                  Go to Login
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="name-fields">
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    value={formData.username}
+                    onChange={handleChange}
+                  />
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+                <select
+                  name="role"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  value={formData.role}
+                  onChange={handleChange}
+                >
+                  <option value="student">Student</option>
+                  <option value="lecturer">Lecturer</option>
+                  <option value="registrar">Registrar</option>
+                  <option value="admin">Admin</option>
+                </select>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  placeholder="Confirm Password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+                <label className="checkbox-label">
+                  <input type="checkbox" />
+                  I agree to the <a href="#">Terms & Conditions</a>
+                </label>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Registering...' : 'Register'}
+                </button>
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>
