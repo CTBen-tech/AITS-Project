@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "../styles/login.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
 // ✅ CSRF token getter using plain JavaScript
@@ -103,9 +104,36 @@ const response = await fetch(`${API_URL}/api/register/`, {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow-xl border border-gray-200">
+    <div className="register-container">
+      <div className="register-card">
+        {/* Left side - image + caption */}
+        <div className="register-image-section">
+          <div className="overlay">
+            <div className="register-header">
+              <span className="logo">AMU</span>
+              <button className="back-button">Back to website ➜</button>
+            </div>
+            <div className="image-caption">
+              <h2>Capturing Moments, Creating Memories</h2>
+              <div className="dots">
+                <span className="dot active"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right side - form */}
+        <div className="register-form-section">
+          <div className="form-container">
+            <h2>Create an account</h2>
+            <p>
+              Already have an account? <a href="#">Log in</a>
+            </p>
       <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
       <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="name-fields">
         <input
           type="text"
           name="username"
@@ -114,6 +142,7 @@ const response = await fetch(`${API_URL}/api/register/`, {
           value={formData.username}
           onChange={handleChange}
         />
+        </div>
         <input
           type="email"
           name="email"
@@ -149,6 +178,11 @@ const response = await fetch(`${API_URL}/api/register/`, {
           value={formData.confirmPassword}
           onChange={handleChange}
         />
+        <label className="checkbox-label">
+                <input type="checkbox" />
+                I agree to the <a href="#">Terms & Conditions</a>
+              </label>
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition duration-200"
@@ -157,6 +191,9 @@ const response = await fetch(`${API_URL}/api/register/`, {
           {isSubmitting ? 'Registering...' : 'Register'}
         </button>
       </form>
+     </div>
+        </div>
+      </div>
     </div>
   );
 };
