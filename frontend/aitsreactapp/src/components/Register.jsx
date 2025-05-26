@@ -22,7 +22,6 @@ const Register = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -86,7 +85,7 @@ const Register = () => {
           password: '',
           confirmPassword: '',
         });
-        setSuccessMessage('Registration successful! Click here to go back to the login page.');
+        setSuccessMessage('Registration successful! Click the button below to go back to the login page.');
       } else {
         if (data.username) {
           alert(`Username error: ${data.username[0]}`);
@@ -106,8 +105,6 @@ const Register = () => {
   };
 
   const handleGoToLogin = () => {
-    // If you're using React Router, use navigate("/login")
-    // Otherwise, fallback to window.location for redirect
     window.location.href = "/login";
   };
 
