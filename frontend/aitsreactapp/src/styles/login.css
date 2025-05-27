@@ -198,14 +198,14 @@ p a {
 /* Left side */
 .register-image-section {
   width: 50%;
-  /*background-image: url('/path-to-your-image.webp');*/
+  background-image: url('../images/progress.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
 }
 
 .overlay {
-  width: 100%;
+  width: 92%;
   height: 100%;
   background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.6));
   color: white;
@@ -283,7 +283,7 @@ p a {
 }
 
 .form-container a {
-  color: #a58bff;
+  color: #ebe9f1;
   text-decoration: none;
 }
 

@@ -78,8 +78,27 @@ function Login() {
   };
 
   return (
+    <div className="register-container">
+      <div className="register-card">
+        {/* Left side - image + caption */}
+        <div className="register-image-section">
+          <div className="overlay">
+            <div className="register-header">
+              <span className="logo">AITS</span><br/>
+              <h3>The academic Issue Tracker you can trust</h3>
+            </div>
+            <div className="image-caption">
+              <h2>Capturing All issues, Tracking all Issues</h2>
+              <div className="dots">
+                <span className="dot active"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
     <div className="login-page">
-      <h2 className="login-title">AITS</h2>
+      
       <div className="login-container">
         <h2 className="login-title">Log Into Your Account</h2>
         <form onSubmit={handleLogin} className="login-form">
@@ -173,6 +192,8 @@ function Login() {
           </div>
         </div>
       )}
+    </div>
+    </div>
     </div>
   );
 }

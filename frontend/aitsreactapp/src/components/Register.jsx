@@ -115,11 +115,11 @@ const Register = () => {
         <div className="register-image-section">
           <div className="overlay">
             <div className="register-header">
-              <span className="logo">AMU</span>
-              <button className="back-button">Back to website ➜</button>
+              <span className="logo">AITS</span><br/>
+              <h3>The academic Issue Tracker you can trust</h3>
             </div>
             <div className="image-caption">
-              <h2>Capturing Moments, Creating Memories</h2>
+              <h2>Capturing All issues, Tracking all Issues</h2>
               <div className="dots">
                 <span className="dot active"></span>
                 <span className="dot"></span>
@@ -204,7 +204,7 @@ const Register = () => {
                 />
                 <label className="checkbox-label">
                   <input type="checkbox" />
-                  I agree to the <a href="#">Terms & Conditions</a>
+                  I agree to the Terms & Conditions
                 </label>
                 <button
                   type="submit"
